@@ -60,7 +60,7 @@ API → ADF → ADLS → Databricks → ADLS → CI/CD Deployment
 
 ---
 
-## 👤 Author
+## 🔖 About Me 
+Hi there! I'm **Houssem Gharbi**, i'm a Junior Data Engineer passionate about building scalable data solutions and deriving actionable insights. I enjoy transforming raw data into meaningful stories that drive decision-making. This project reflects my skills and interest in creating efficient data pipelines and analytics platforms.
 
-Houssem Gharbi  
-Aspiring Data Engineer  
+
