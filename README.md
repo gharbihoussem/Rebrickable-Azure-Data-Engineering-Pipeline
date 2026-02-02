@@ -3,16 +3,13 @@
 ## 📖 Overview
 
 This project demonstrates an end-to-end Azure Data Engineering pipeline using Azure Data Factory, Databricks, and Azure DevOps.
-
 The pipeline ingests LEGO Minifig data from the Rebrickable API, processes it, and stores analytics-ready datasets in ADLS Gen2.
 
 ---
 
-## 🏗 Architecture
+## 🏗 Minifigs Pipeline architecture
 
-API → ADF → ADLS → Databricks → ADLS → CI/CD Deployment
-
-(Add your diagram in /docs)
+<img width="1536" height="1024" alt="Minifigs Pipeline architecture" src="https://github.com/user-attachments/assets/822ae9e5-71f7-4148-b65c-ca4529881caf" />
 
 ---
 
@@ -57,7 +54,7 @@ API → ADF → ADLS → Databricks → ADLS → CI/CD Deployment
 - LEGO dataset analytics
 - API ingestion pipeline template
 - Secure enterprise pipeline design
-
+  
 ---
 
 ## 🔖 About Me 
