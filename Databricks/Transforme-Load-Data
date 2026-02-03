@@ -1,6 +1,6 @@
-#Transforme Data  
+#Transforme Data  :
 
-python :
+#python :
 display(dbutils.fs.ls("abfss://raw@ADF-name.dfs.demo.window.net"))
 
 df=spark.read.format("json").load("link to the Rebrickable Minifigs File")
@@ -46,6 +46,7 @@ where
 ---
 
 #Load Data : 
+#py
   _sqldf \
 		.write \
 		.format ("delta") \
