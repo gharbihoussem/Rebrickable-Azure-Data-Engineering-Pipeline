@@ -1,0 +1,62 @@
+name: ADF CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+
+# -------- DEV --------
+  deploy-dev:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Validate ADF
+      run: echo "Validate ADF JSON here"
+
+    - name: Export ARM Template
+      run: echo "Export ARM template"
+
+# -------- TEST --------
+  deploy-test:
+    needs: deploy-dev
+    runs-on: ubuntu-latest
+    environment: test
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Test ADF
+      run: echo "Deploy ARM to TEST"
+
+# -------- PROD --------
+  deploy-prod:
+    needs: deploy-test
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Stop triggers
+      run: echo "Stop ADF triggers"
+
+    - name: Deploy to PROD
+      run: echo "Deploy ARM to PROD"
+
+    - name: Start triggers
+      run: echo "Start triggers"
