@@ -50,9 +50,9 @@ where
   _sqldf \
 		.write \
 		.format ("delta") \
-		.save (" abfss://Silver@.............net / Rebrickable / Minifigs")
+		.save (" abfss://conformed@.............net / Rebrickable / Minifigs")
 
-display ( spark.read.format("delta").load("abfss://Silver@.........Minifigs" ) )
+display ( spark.read.format("delta").load("abfss://conformed@.........Minifigs" ) )
 
 
 #sql
@@ -60,7 +60,7 @@ Create database GharbiDB ;
  
 Create table GharbiDB.Minifigs_External
 
- Location "abfss://Silver@adfs_name/Rebrickable/Minifigs"
+ Location "abfss://conformed@adfs_name/Rebrickable/Minifigs"
 
 as
 
