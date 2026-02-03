@@ -1,0 +1,102 @@
+{
+  "name": "Get rebrickable api",
+  "properties": {
+    "activities": [
+
+      {
+        "name": "Get rebrickable api key from key vault",
+        "type": "WebActivity",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "00:05:00",
+          "retry": 2
+        },
+        "typeProperties": {
+          "url": "https://<your-keyvault-name>.vault.azure.net/secrets/RebrickableApiKey?api-version=7.3",
+          "method": "GET",
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://vault.azure.net"
+          }
+        }
+      },
+
+      {
+        "name": "Copy Minifigs From Rebrickable",
+        "type": "Copydata",
+        "dependsOn": [
+          {
+            "activity": "Get_Rebrickable_API_Key",
+            "dependencyConditions": ["Succeeded"]
+          }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "RestSource",
+            "httpRequestTimeout": "00:02:00",
+            "requestMethod": "GET"
+          },
+          "sink": {
+            "type": "JsonSink"
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "DS_Rebrickable_REST",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "DS_ADLS_Raw",
+            "type": "DatasetReference"
+          }
+        ]
+      },
+
+      {
+        "name": "Excute our notebook code",
+        "type": "DatabricksNotebook",
+        "dependsOn": [
+          {
+            "activity": "Copy_Minifigs_From_Rebrickable",
+            "dependencyConditions": ["Succeeded"]
+          }
+        ],
+        "typeProperties": {
+          "notebookPath": "/Shared/RebrickableTransform",
+          "baseParameters": {
+            "inputPath": "raw/Rebrickable/minifigs/"
+          }
+        },
+        "linkedServiceName": {
+          "referenceName": "AzureDatabricksLS",
+          "type": "LinkedServiceReference"
+        }
+      },
+
+      {
+        "name": "Send Mail (on Error Action)",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "Copy_Minifigs_From_Rebrickable",
+            "dependencyConditions": ["Failed"]
+          },
+          {
+            "activity": "Execute_Databricks_Notebook",
+            "dependencyConditions": ["Failed"]
+          }
+        ],
+        "typeProperties": {
+          "url": "https://<your-logic-app-url>",
+          "method": "POST",
+          "body": {
+            "message": "Pipeline failed. Check ADF logs."
+          }
+        }
+      }
+
+    ]
+  }
+}
